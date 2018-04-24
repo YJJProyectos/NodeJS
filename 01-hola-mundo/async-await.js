@@ -14,7 +14,18 @@ let getNombre = () => {
   }); 
 }
 
+let saludo = async() => {
+
+  let nombre = await getNombre();
+
+  return `Hola ${ nombre }`;
+};
+
 console.log(getNombre().then(salida => {console.log(salida)}
 ));
 
 
+console.log(saludo().then(mensaje => {
+  console.log(mensaje);
+  })
+);
