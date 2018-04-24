@@ -9,6 +9,16 @@ const argv = require('yargs')
                         default: 10
                       }
                     })
+                    .command('crear','Crear la tabla de multiplicar',{
+                      base: {
+                        demand: true,
+                        alias: 'b'
+                      },
+                      limite: {
+                        alias: 'l',
+                        default: 10
+                      }
+                    })                    
                     .help()
                     .argv;
 
@@ -25,10 +35,29 @@ let argv2 = process.argv;
 // // console.log(multiplicar);
 // console.log(parametro);
 // console.log(base);
-console.log(argv2);
+
 console.log(argv);
 console.log(argv.base);
-console.log(argv.limite);
+
+
+let comando = argv._[0];
+// console.log(comando);
+
+
+switch(comando) {
+  case 'listar':
+    console.log('listar');
+    break;
+  case 'crear':
+    console.log('crear');
+    crearArchivo(argv.base)
+      .then( archivo => console.log(`Archivo creado ${archivo}`))
+      .catch( err => console.log(err))
+    break;
+  default:
+    console.log('comando no reconocido');
+    break;
+}
 
 
 
