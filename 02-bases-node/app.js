@@ -25,7 +25,7 @@ const argv = require('yargs')
 
 // "importar del modulo multiplicar"
 // const multiplicar = require('./multiplicar/multiplicar');
-const { crearArchivo } = require('./multiplicar/multiplicar');
+const { crearArchivo, listarTabla } = require('./multiplicar/multiplicar');
 // let base = '5';
 // console.log(module);
 // console.log(process.argv);
@@ -47,10 +47,11 @@ let comando = argv._[0];
 switch(comando) {
   case 'listar':
     console.log('listar');
+    listarTabla(argv.base, argv.limite);
     break;
   case 'crear':
     console.log('crear');
-    crearArchivo(argv.base)
+    crearArchivo(argv.base, argv.limite)
       .then( archivo => console.log(`Archivo creado ${archivo}`))
       .catch( err => console.log(err))
     break;
