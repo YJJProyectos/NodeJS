@@ -6,6 +6,9 @@ app.use( express.static( __dirname + '/public') );
 
 // express hbs engine
 hbs.registerPartials(__dirname + '/views/partials');
+
+require('./hbs/helpers');
+
 app.set('view engine', 'hbs');
  
 // app.get('/',  (req, res) => {
@@ -22,17 +25,14 @@ app.get('/',  (req, res) => {
 
   res.render('home', {
     nombre: 'pepe',
-    user: 'test',
-    anio: new Date().getFullYear()
+    user: 'test'
   });
 
 });
 
 
 app.get('/about',  (req, res) => {
-  res.render('about', {
-    anio: new Date().getFullYear()
-  });
+  res.render('about');
 }); 
 
 app.listen(3000, () => {
