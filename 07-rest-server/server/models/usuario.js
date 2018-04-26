@@ -37,13 +37,14 @@ let usuarioSchema = new Schema({
   },
   google: {
     type:String,
+    default: false,
     required: false
   }  
 });
 
 // 
 usuarioSchema.methods.toJSON = function() {
-  
+
   let user = this;
   let userObject = user.toObject();
   delete userObject.password;
