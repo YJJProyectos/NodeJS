@@ -12,7 +12,7 @@ app.get('/usuario', function (req, res) {
   let limite = req.query.limite || 5;
   limite = Number(limite);
 
-  Usuario.find({})
+  Usuario.find({}, 'nombre email role google estado img')
          .skip(desde)
          .limit(limite)
          .exec( (err, usuarios) => {
@@ -22,10 +22,16 @@ app.get('/usuario', function (req, res) {
                 err
               });
             }
-            res.json({
-              ok: true,
-              usuarios : usuarios
+            Usuario.count({}, (err, conteo) => {
+
+              res.json({
+                ok: true,
+                usuarios : usuarios,
+                cuantos: conteo
+              });
+
             });
+
          } )
 });
 
@@ -84,8 +90,76 @@ app.put('/usuario/:id', function (req, res) {
 
 });
 
+app.delete('/usuario/:id', function (req, res) {
+
+  let id = req.params.id;
+
+  Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
+    if ( err ) {
+      return res.status(400).json({
+        ok: false,
+        err
+      });
+    }
+    if ( !usuarioBorrado ) {
+      return res.status(400).json({
+        ok: false,
+        err: {
+          message: 'usuario no existe'
+        }
+      });
+    }
+
+    res.json({
+      ok: true,
+      usuario: usuarioBorrado
+    });
+
+  } )
+
+});
+
+
 app.delete('/usuario', function (req, res) {
-  res.json('delete usuario');
+
+  let id = req.query.id || null;
+
+  if ( !id ) {
+    return res.status(400).json({
+      ok: false,
+      err: {
+        message: 'usuario no existe'
+      }
+    });
+  }
+
+  let body = {
+    estado: false
+  }
+
+  Usuario.findByIdAndUpdate( id, body, {new : true}, (err, usuarioDB) => {
+    if ( err ) {
+      return res.status(400).json({
+        ok: false,
+        err
+      });
+    }
+    if ( !usuarioDB ) {
+      return res.status(400).json({
+        ok: false,
+        err: {
+          message: 'usuario no existe'
+        }
+      });
+    }
+    res.json({
+      ok: true,
+      usuario: usuarioDB
+    });
+  } )
+
+
+
 });
 
 module.exports = app;
