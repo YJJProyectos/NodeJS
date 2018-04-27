@@ -9,7 +9,7 @@ app.get('/usuario', function (req, res) {
 
   let desde = req.query.desde || 0;
   desde = Number(desde);
-  let limite = req.query.limite || 100;
+  let limite = req.query.limite || 0;
   limite = Number(limite);
 
   Usuario.find({estado: true}, 'nombre email role google estado img')
@@ -34,6 +34,60 @@ app.get('/usuario', function (req, res) {
 
          } )
 });
+
+
+app.get('/usuario/:tipo', function (req, res) {
+
+  let desde = req.query.desde || 0;
+  desde = Number(desde);
+  let limite = req.query.limite || 0;
+  limite = Number(limite);
+
+  let tipo = req.params.tipo;
+  let filtro;
+  switch (tipo) {
+
+    case 'todos':
+      filtro = {};
+      break;
+
+    
+    case 'borrado':
+      filtro = { estado: false};
+      break;
+
+    default:
+      return res.status(400).json({
+        ok: false,
+        err : {
+          message: 'tipo incorrecto'
+        }
+      });
+  }
+
+  Usuario.find(filtro, 'nombre email role google estado img')
+         .skip(desde)
+         .limit(limite)
+         .exec( (err, usuarios) => {
+            if ( err ) {
+              return res.status(400).json({
+                ok: false,
+                err
+              });
+            }
+            Usuario.count(filtro, (err, conteo) => {
+
+              res.json({
+                ok: true,
+                usuarios : usuarios,
+                cuantos: conteo
+              });
+
+            });
+
+         } )
+});
+
 
 app.post('/usuario', function (req, res) {
 
