@@ -34,7 +34,7 @@ switch (comando) {
     console.log('Actualiza una tarea por hacer');
     break;
   case 'mail':
-    console.log('Mandar un mail');
+    console.log('Mandar un mail a ' + argv.para);
     var transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -56,8 +56,8 @@ switch (comando) {
         template = data.toString();
         mailOptions = {
           from: 'y.jiajun.16@gmail.com',
-          to: 'y.jiajun.15@gmail.com',
-          subject: 'Mandar mail mediante NodeJS',
+          to: argv.para,
+          subject: argv.titulo,
           text: 'text',
           html: template
         };

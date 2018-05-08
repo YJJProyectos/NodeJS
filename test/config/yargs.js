@@ -16,7 +16,19 @@ const argv = require('yargs')
                       completado: {
                         alias: 'c',
                         default: false
-                      }})                   
+                      }})
+                    .command('mail', 'Mandar un mail desde correo',{
+                      para:{
+                        demand: false,
+                        default: 'y.jiajun.15@gmail.com',
+                        alias: 'p'
+                      },
+                      titulo:{
+                        demand: false,
+                        default: 'Enviar mail mediante NodeJS',
+                        alias: 't'
+                      }
+                    })                   
                     .help()
                     .argv;
 module.exports = {
