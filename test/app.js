@@ -5,7 +5,9 @@ const cuenta = require('./db/usuario');
 var fs = require('fs');
 var path = require('path');
 
-var fp = path.join(process.cwd(), 'templates/Mail_Confirmar_Suscripcion.html');
+const { replaceAll, replaceAllArray, algo } = require('./utils/replace');
+
+var fp = path.join(process.cwd(), 'templates/estimado_clientev5.html');
 var template = "";
 fs.readFile(fp, function (err, data) {
   if (err)
@@ -44,6 +46,7 @@ switch (comando) {
     });
 
     console.log(cuenta.user);
+    console.log('Algo ' + algo);
     
 
     var mailOptions;
@@ -52,14 +55,36 @@ switch (comando) {
         throw err; 
       else
         // console.log(data.toString());
-        
+        var aBuscar = [
+          "www.google.com",
+          '&lt;var_email&gt;',
+          '&lt;var_id_operacion&gt;',
+          '&lt;var_nro_cuota1&gt;',
+          '&lt;var_fecha_vencimiento1&gt;',
+          '&lt;var_nro_cuota2&gt;',
+          '&lt;var_fecha_vencimiento2&gt;',
+          '&lt;var_url&gt;',
+          '&lt;var_url_terminos&gt;'
+        ];
+        var aReemplazar = [ 
+          "http://www.youtube.com",
+          "test@test.test",
+          "7",
+          "cuota 1",
+          "20/07/2018",
+          "cuota 2",
+          "30/08/2018",
+          "http://www.google.com",
+          "http://youtube.com"
+        ];
         template = data.toString();
         mailOptions = {
           from: 'y.jiajun.16@gmail.com',
           to: argv.para,
           subject: argv.titulo,
           text: 'text',
-          html: template
+          // html: replaceAll(template, 'www.google.com', 'www.youtube.com')
+          html: replaceAllArray(template, aBuscar, aReemplazar)
         };
         // console.log(template);
         transporter.sendMail(mailOptions, function(error, info){
