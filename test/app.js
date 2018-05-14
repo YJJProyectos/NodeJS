@@ -75,7 +75,7 @@ switch (comando) {
           "cuota 2",
           "30/08/2018",
           "http://www.google.com",
-          "http://youtube.com"
+          "http://devenersa.azurewebsites.net/Confirmaciones/terminos_condiciones.html"
         ];
         template = data.toString();
         mailOptions = {

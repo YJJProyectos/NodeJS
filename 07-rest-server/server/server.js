@@ -13,7 +13,8 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
-app.use(require('./routes/usuario'));
+// configuracion global de rutas
+app.use(require('./routes/routes'));
 
 mongoose.connect(process.env.URLDB, (err, res) => {
   if (err) {
